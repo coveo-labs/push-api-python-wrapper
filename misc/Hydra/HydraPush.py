@@ -8,7 +8,6 @@ from misc.PushBase import PushBase
 
 class HydraPush(PushBase):
     def __init__(self):
-
         PushBase.__init__(self, HydraConfig())
         self.configuration = HydraConfig()
 
@@ -60,3 +59,4 @@ class HydraPush(PushBase):
 if __name__ == "__main__":
     pusher = HydraPush()
     pusher.run()
+    
