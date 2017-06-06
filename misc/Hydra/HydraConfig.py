@@ -30,3 +30,4 @@ class HydraConfig (PushConfiguration):
         return self.task_display_url.format(
             task_id=task_id
         )
+    
