@@ -51,3 +51,10 @@ class PushConfiguration:
             'Authorization': 'Bearer ' + self.coveo_push_api_key,
             'content-type': 'application/json'
         }
+
+    @staticmethod
+    def get_headers_for_s3():
+        return {
+            "content-type": "",
+            "x-amz-server-side-encryption": "AES256"
+        }

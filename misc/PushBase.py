@@ -113,10 +113,10 @@ class PushBase:
         print 'Calling: PUT ' + coveo_batch_document_api_url
         r = requests.put(
             coveo_get_batch_file_id_url,
-            headers=self.coveo_headers
+            headers=self.configuration.get_headers_for_s3()
         )
 
-        if r.status_code == 202:
+        if r.status_code == 200:
             print 'SUCCESS [%s]' % file_id
         else:
             print r.text
