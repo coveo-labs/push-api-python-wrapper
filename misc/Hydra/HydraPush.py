@@ -8,7 +8,6 @@ from sys import argv
 
 class HydraPush(PushBase):
     def __init__(self):
-
         PushBase.__init__(self, HydraConfig())
         self.configuration = HydraConfig()
 
@@ -160,8 +159,6 @@ class HydraPush(PushBase):
 
 if __name__ == "__main__":
     pusher = HydraPush()
-    pusher.run_incremental()
-    exit()
 
     if len(argv) > 1:
         if str(argv[1]).lower() == "incremental":

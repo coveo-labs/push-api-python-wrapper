@@ -38,3 +38,4 @@ class PushConfiguration:
             'Authorization': 'Bearer ' + self.coveo_push_api_key,
             'content-type': 'application/json'
         }
+    
