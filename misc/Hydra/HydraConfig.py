@@ -1,4 +1,4 @@
-from misc.PushConfiguration import PushConfiguration
+from PushConfiguration import PushConfiguration
 
 
 class HydraConfig (PushConfiguration):

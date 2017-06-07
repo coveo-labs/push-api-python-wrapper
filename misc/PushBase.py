@@ -1,6 +1,7 @@
 import requests
 import zlib
 import base64
+import shelve
 
 
 class PushBase:
@@ -64,8 +65,8 @@ class PushBase:
             print r.text
 
     # Set the source status
-    def delete_older_than_now(self):
-        coveo_delete_older_than_url = self.configuration.get_delete_older_than_now_url()
+    def delete_older_than(self, epoch_time_in_milliseconds):
+        coveo_delete_older_than_url = self.configuration.get_delete_older_thanurl(epoch_time_in_milliseconds)
         coveo_headers = self.configuration.get_headers_with_push_api_key()
 
         # print request
@@ -75,3 +76,17 @@ class PushBase:
         r = requests.delete(coveo_delete_older_than_url, headers=coveo_headers)
 
         print r.status_code
+
+    @staticmethod
+    def get_state_value(caller, key):
+        shelf = shelve.open(str(caller.__class__.__name__) + ".shelf")
+        value = shelf[key] if shelf.has_key(key) else None
+        shelf.close()
+
+        return value
+
+    @staticmethod
+    def set_state_value(caller, key, value):
+        shelf = shelve.open(str(caller.__class__.__name__) + ".shelf")
+        shelf[key] = value
+        shelf.close()

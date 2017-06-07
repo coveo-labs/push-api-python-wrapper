@@ -25,11 +25,11 @@ class PushConfiguration:
             source_id=self.coveo_source_id
         )
 
-    def get_delete_older_than_now_url(self):
+    def get_delete_older_than_url(self, epoch_time_in_milliseconds):
         return self.coveo_delete_older_than_url.format(
             organization_id=self.coveo_organization_id,
             source_id=self.coveo_source_id,
-            ordering_id=int(round(time() * 1000))
+            ordering_id=epoch_time_in_milliseconds
         )
 
     # create Authorization (access_token) and content-type (json) headers
