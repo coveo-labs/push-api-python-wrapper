@@ -143,6 +143,9 @@ class HydraPush(PushBase):
                 # Delete old documents
                 self.delete_older_than(epoch_time_in_milliseconds)
 
+                # Save the state
+                self.set_state_value(self, "lastupdatedatetime", epoch_time_in_milliseconds)
+
                 # set status back to IDLE
                 self.set_source_status('IDLE')
 
