@@ -87,9 +87,7 @@ class HydraPush(PushBase):
             self.set_source_status('IDLE')
 
             # Display rejects
-            for reject in reject_list:
-                print reject[0]
-                print reject[1]
+            self.print_rejects(reject_list)
         except Exception as e:
             self.set_source_status('ERROR')
 
@@ -157,9 +155,7 @@ class HydraPush(PushBase):
                 self.set_source_status('IDLE')
 
                 # Display rejects
-                for reject in reject_list:
-                    print reject[0]
-                    print reject[1]
+                self.print_rejects(reject_list)
             except Exception as e:
                 self.set_source_status('ERROR')
 

@@ -122,6 +122,12 @@ class PushBase:
             print r.text
 
     @staticmethod
+    def print_rejects(reject_list):
+        for reject in reject_list:
+            print reject[0]
+            print reject[1]
+
+    @staticmethod
     def get_state_value(caller, key):
         shelf = shelve.open(str(caller.__class__.__name__) + ".shelf")
         value = shelf[key] if shelf.has_key(key) else None
