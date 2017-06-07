@@ -2,7 +2,7 @@ import requests
 import zlib
 import base64
 import shelve
-
+from json import loads
 
 class PushBase:
     def __init__(self, configuration):
@@ -27,7 +27,7 @@ class PushBase:
         print 'statusType: ' + status
 
         # make POST request to change status
-        r = requests.post(coveo_status_api_url, headers=coveo_headers, params=params)
+        r = requests.post(coveo_status_api_url, headers=self.coveo_headers, params=params)
 
         print r.status_code
 
@@ -72,10 +72,54 @@ class PushBase:
         # print request
         print 'Calling: DELETE ' + coveo_delete_older_than_url
 
-        # make POST request to change status
-        r = requests.delete(coveo_delete_older_than_url, headers=coveo_headers)
+        r = requests.delete(coveo_delete_older_than_url, headers=self.coveo_headers)
 
         print r.status_code
+
+    def push_batch(self, batch):
+        coveo_get_batch_file_id_url = self.configuration.get_batch_file_id_url()
+
+        # print request
+        print 'Calling: POST ' + coveo_get_batch_file_id_url
+        r = loads(
+            requests.post(
+                coveo_get_batch_file_id_url,
+                headers=self.coveo_headers
+            ).content
+        )
+
+        upload_uri = r["uploadUri"]
+        file_id = r["file_id"]
+
+        # Upload the batch
+        specific_headers = self.coveo_headers
+        specific_headers["Content Type"] = "application/octet-stream"
+        specific_headers["x-amz-server-side-encryption"] = "AES256"
+
+        print 'Calling: PUT ' + upload_uri
+        r = requests.put(
+            upload_uri,
+            headers=specific_headers,
+            data=batch
+        )
+
+        if r.status_code == 202:
+            print 'SUCCESS [%s]' % file_id
+        else:
+            print r.text
+
+        # Request the push api to process the batch
+        coveo_batch_document_api_url = self.configuration.get_batch_document_api_url(file_id)
+        print 'Calling: PUT ' + coveo_batch_document_api_url
+        r = requests.put(
+            coveo_get_batch_file_id_url,
+            headers=self.coveo_headers
+        )
+
+        if r.status_code == 202:
+            print 'SUCCESS [%s]' % file_id
+        else:
+            print r.text
 
     @staticmethod
     def get_state_value(caller, key):

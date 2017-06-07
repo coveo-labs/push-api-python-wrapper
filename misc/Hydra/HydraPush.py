@@ -14,6 +14,7 @@ class HydraPush(PushBase):
     @staticmethod
     def build_task_body(self, task):
         # Build the metadata
+        task["documentId"] = task["uri"]
         task["FileExtension"] = ".html"
         # We do not have any binary data for this source. But if we would have had, here's.
         # ... how I would have done it
@@ -52,18 +53,25 @@ class HydraPush(PushBase):
 
                     for task_group in requester.get_tasks(task_group_list["ID"]):
                         try:
+                            batch = []
+
                             for task in task_group:
                                 try:
                                     # Assign the uri
                                     task["uri"] = self.configuration.get_task_display_url(task["ID"])
 
                                     # Then, add the document
-                                    self.add_document(
-                                        task["uri"],
-                                        self.build_task_body(task)
-                                    )
+
+                                    batch.append(self.build_task_body(task))
                                 except Exception as e:
                                     reject_list.append("TASK", e)
+
+                            self.push_batch(
+                                batch={
+                                    "AddOrUpdate": batch,
+                                    "Delete": []
+                                }
+                            )
                         except Exception as e:
                             reject_list.append(["TASK GROUP", e])
                 except Exception as e:

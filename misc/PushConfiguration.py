@@ -1,10 +1,11 @@
-from time import time
-
 class PushConfiguration:
     # Endpoints
-    coveo_document_api_url = 'https://push.cloud.coveo.com/v1/organizations/{organization_id}/sources/{source_id}/documents'
-    coveo_status_api_url = 'https://push.cloud.coveo.com/v1/organizations/{organization_id}/sources/{source_id}/status'
-    coveo_delete_older_than_url = "https://push.cloud.coveo.com/v1/organizations/{organization_id}/sources/{source_id}/documents/olderthan?orderingId={ordering_id}"
+    base_url = "https://push.cloud.coveo.com/v1/organizations/{organization_id}/"
+    coveo_document_api_url = base_url + "sources/{source_id}/documents"
+    coveo_status_api_url = base_url + "sources/{source_id}/status"
+    coveo_delete_older_than_url = base_url + "sources/{source_id}/documents/olderthan?orderingId={ordering_id}"
+    coveo_get_batch_file_id_url = base_url + "files"
+    coveo_batch_document_api_url = base_url + "sources/{source_id}/documents/batch?fileId={file_id}"
 
     def __init__(self, coveo_organization_id, coveo_source_id, coveo_push_api_key):
         # Coveo organization and source configuration
@@ -25,6 +26,18 @@ class PushConfiguration:
             source_id=self.coveo_source_id
         )
 
+    def get_batch_file_id_url(self):
+        return self.coveo_get_batch_file_id_url.format(
+            organization_id=self.coveo_organization_id
+        )
+
+    def get_batch_document_api_url(self, file_id):
+        return self.coveo_batch_document_api_url.format(
+            organization_id=self.coveo_organization_id,
+            source_id=self.coveo_source_id,
+            file_id=file_id
+        )
+
     def get_delete_older_than_url(self, epoch_time_in_milliseconds):
         return self.coveo_delete_older_than_url.format(
             organization_id=self.coveo_organization_id,
@@ -38,4 +51,3 @@ class PushConfiguration:
             'Authorization': 'Bearer ' + self.coveo_push_api_key,
             'content-type': 'application/json'
         }
-    
