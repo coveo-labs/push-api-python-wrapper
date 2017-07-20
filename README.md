@@ -9,7 +9,7 @@ The code for the projects uses the Push API from the Coveo Platform. You can use
 - PushAPI documentation: https://developers.coveo.com/display/public/CloudPlatform/Push+API+Usage+Overview
 
 ## Contributing
-- Banch
+- Branch
 - Pull Request
 - And... that's pretty much it!
 
