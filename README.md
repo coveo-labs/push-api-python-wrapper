@@ -25,4 +25,4 @@ This project do not require to build.
 
 ## Authors
 - Jean-François Cloutier (https://github.com/ancientwinds)
-- Jérôme Devost (https://github.com/jdevost) (he does know, but I took a couple of lines from a code example he sent me...)
+- Jérôme Devost (https://github.com/jdevost) (he doesn't know, but I took a couple of lines from a code example he sent me...)
